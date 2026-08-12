@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>방탈출 자동 예약 테스트</title>
+</head>
+<body>
+    <h2>방탈출 예약 테스트 화면</h2>
+    <form action="/reserve" method="post">
+        이름: <input type="text" name="name" value="이도윤"><br><br>
+        연락처: <input type="text" name="phone" value="010-6525-3150"><br><br>
+        예약 날짜: <input type="date" name="date" value="2026-08-18"><br><br>
+        예약 시간: <input type="text" name="time" value="10:15" placeholder="예: 10:15"><br><br>
+        <hr>
+        <h3>타이머 설정</h3>
+        실행 날짜: <input type="date" name="run_date" value="2026-08-12"><br><br>
+        실행 시간: <input type="time" name="run_time" value="11:10"><br><br>
+        
+        <!-- 고정값들은 숨겨서 전송 -->
+        <input type="hidden" name="people" value="2">
+        <input type="hidden" name="branch" value="2">
+        <input type="hidden" name="theme" value="18">
+        
+        <button type="submit">예약 테스트 실행 (Run Booking Test)</button>
+    </form>
+</body>
+</html>

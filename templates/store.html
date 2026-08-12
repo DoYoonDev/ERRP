@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ brand_name }} - 매장 선택</title>
+    <!-- CSS 연결 -->
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/store.css">
+</head>
+<body>
+    <div class="container" style="max-width: 800px; margin: 50px auto; text-align: center;">
+        <h2>🏪 {{ brand_name }} 매장 선택</h2>
+        <p style="color: #666; margin-bottom: 30px;">원하시는 지점을 선택해 주세요.</p>
+
+        <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+            {% for code, info in stores.items() %}
+            <a href="/reservation?brand={{ brand }}&store_code={{ code }}" 
+               style="background: #fff; border: 1px solid #ddd; padding: 15px 25px; border-radius: 5px; text-decoration: none; color: #333; font-weight: bold;">
+                {{ info.name }}
+            </a>
+            {% endfor %}
+        </div>
+
+        <br><br>
+        <a href="/" style="color: #007bff; text-decoration: underline;">⬅ 메인으로 돌아가기</a>
+    </div>
+
+    <!-- JS 연결 -->
+    <script src="/static/js/store.js"></script>
+</body>
+</html>

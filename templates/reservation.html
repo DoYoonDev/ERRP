@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ store_name }} - 예약 및 타이머</title>
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/reservation.css">
+</head>
+<body>
+    <div class="container">
+        <h2>{{ store_name }} 예약 현황</h2>
+        <a href="/store?brand={{ brand }}">🏪 매장 다시 선택하기</a>
+        <br><hr><br>
+
+        <!-- 💡 달력 선택을 없애고, 미리 세팅된 목표 예약 날짜를 깔끔하게 안내 -->
+        <div style="background: #eef2ff; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+            <p style="margin: 0; font-size: 1.1em; font-weight: bold; color: #4f46e5;">
+                🎯 자동화 타겟 예약 날짜: <span style="color: #d97706; font-size: 1.2em;">{{ date }}</span>
+                <span style="font-size: 0.85em; color: #666; font-weight: normal;">(오픈 정책에 따라 자동 계산됨)</span>
+            </p>
+        </div>
+
+        {% for t in themes %}
+        <section class="res-item" style="margin-bottom: 30px; border-bottom: 1px solid #ddd; padding-bottom: 20px;">
+            {% if t.img %}
+            <img src="{{ t.img }}" alt="{{ t.title }}" style="width: 200px; border-radius: 5px;">
+            {% endif %}
+            <h2>{{ t.title }}</h2>
+            <ul class="res-times" style="list-style: none; padding: 0; display: flex; gap: 10px; flex-wrap: wrap;">
+                {% for slot in t.slots %}
+                <li>
+                    {% if slot.is_locked %}
+                        <button type="button" disabled style="background-color: #ffcccc; cursor: not-allowed; padding: 8px 12px;">
+                            🔒 타이머 선점됨 ({{ slot.time }})
+                        </button>
+                    {% elif slot.status == '예약가능' %}
+                        <button type="button" onclick="triggerAutomation('{{ brand }}', '{{ store_code }}', '{{ t.title }}', '{{ date }}', '{{ slot.time }}')" style="background-color: #d4edda; cursor: pointer; padding: 8px 12px;">
+                            ✨ 예약가능 ({{ slot.time }})
+                        </button>
+                    {% else %}
+                        <button type="button" disabled style="padding: 8px 12px; background: #e2e3e5;">
+                            ❌ 불가 ({{ slot.time }})
+                        </button>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
+        {% endfor %}
+    </div>
+
+    <script src="/static/js/reservation.js"></script>
+</body>
+</html>

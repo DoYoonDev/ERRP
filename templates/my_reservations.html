@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>내 예약 목록</title>
+    <link rel="stylesheet" href="/static/css/common.css">
+</head>
+<body style="padding: 30px; background: #f9fafb;">
+    <div style="max-width: 800px; margin: 0 auto; background: white; padding: 25px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+        <h2>📋 내 자동예약 타이머 목록</h2>
+        <a href="/" style="display: inline-block; margin: 15px 0; color: #4f46e5; text-decoration: none;">← 대시보드로 돌아가기</a>
+        
+        <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+            <thead>
+                <tr style="background: #f3f4f6; text-align: left;">
+                    {% if is_admin %}
+                    <th style="padding: 10px; border-bottom: 2px solid #ddd;">작성자</th>
+                    {% endif %}
+                    <th style="padding: 10px; border-bottom: 2px solid #ddd;">테마</th>
+                    <th style="padding: 10px; border-bottom: 2px solid #ddd;">예약 대상일</th>
+                    <th style="padding: 10px; border-bottom: 2px solid #ddd;">타이머 실행시점</th>
+                    <th style="padding: 10px; border-bottom: 2px solid #ddd;">상태</th>
+                    <th style="padding: 10px; border-bottom: 2px solid #ddd;">관리</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if reservations %}
+                    {% for r in reservations %}
+                    <tr>
+                        {% if is_admin %}
+                        <td style="padding: 10px; border-bottom: 1px solid #eee; font-weight: bold; color: #4f46e5;">{{ r.username }}</td>
+                        {% endif %}
+                        <td style="padding: 10px; border-bottom: 1px solid #eee;">{{ r.theme }} ({{ r.time }})</td>
+                        <td style="padding: 10px; border-bottom: 1px solid #eee;">{{ r.date }}</td>
+                        <td style="padding: 10px; border-bottom: 1px solid #eee;">{{ r.run_date }} {{ r.run_time }}</td>
+                        <td style="padding: 10px; border-bottom: 1px solid #eee; font-weight: bold; color: {% if r.status == '대기중' %}#d97706{% elif r.status == '완료' %}#10b981{% else %}#ef4444{% endif %};">
+                            {{ r.status }}
+                        </td>
+                        <td style="padding: 10px; border-bottom: 1px solid #eee;">
+                            {% if r.status == '대기중' %}
+                            <form action="/cancel_reservation/{{ r.id }}" method="POST" style="margin: 0;">
+                                <button type="submit" style="background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">취소</button>
+                            </form>
+                            {% else %}
+                            -
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 30px; color: #888;">등록된 예약 자동화 타이머가 없습니다.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

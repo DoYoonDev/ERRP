@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>예약 자동화 시스템 - 메인</title>
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/main.css">
+</head>
+<body>
+    <div class="container" style="max-width: 600px; margin: 30px auto; text-align: center;">
+        
+        <!-- 상단 사용자 정보 및 메뉴 바 -->
+        <div style="display: flex; justify-content: space-between; align-items: center; background: #f3f4f6; padding: 12px 20px; border-radius: 8px; margin-bottom: 20px;">
+            <span style="font-weight: bold; color: #374151;">👤 <b>{{ user_name }}</b>님 환영합니다!</span>
+            <div style="display: flex; gap: 10px;">
+                <a href="/my_reservations" style="padding: 6px 12px; background: #4f46e5; color: white; text-decoration: none; border-radius: 5px; font-size: 0.9em;">📋 내 예약 확인</a>
+                <a href="/logout" style="padding: 6px 12px; background: #ef4444; color: white; text-decoration: none; border-radius: 5px; font-size: 0.9em;">로그아웃</a>
+            </div>
+        </div>
+
+        <!-- 실시간 예약 타이머 현황 (좌우 분할 슬라이드) -->
+        <div class="slider-container">
+            <div class="slide-track" id="slideTrack">
+                {% if reservations %}
+                    {% for r in reservations %}
+                    <div class="slide-item">
+                        <div class="slide-img-box">
+                            <img src="{{ r.img }}" alt="{{ r.theme }}">
+                        </div>
+                        <div class="slide-info-box">
+                            <div style="margin-bottom: 4px;">
+                                <span style="background: #d97706; color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.75em; font-weight: bold;">대기중</span>
+                                {% if user_name == '관리자' or is_admin %}
+                                <span style="font-size: 0.8em; color: #64748b; margin-left: 5px;">👤 {{ r.username }}</span>
+                                {% endif %}
+                            </div>
+                            <h4 style="margin: 0 0 4px 0; font-size: 1.05em; color: #1e293b;">🎮 {{ r.theme }}</h4>
+                            <p style="margin: 0; font-size: 0.85em; color: #475569;">예약일: <b>{{ r.date }}</b> ({{ r.time }})</p>
+                            <p style="margin: 3px 0 0 0; font-size: 0.8em; color: #64748b;">타이머 발사: {{ r.run_date }} {{ r.run_time }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="slide-item" style="justify-content: center; text-align: center;">
+                        <div class="slide-info-box" style="align-items: center; text-align: center;">
+                            <span style="font-size: 0.95em; font-weight: bold; color: #334155;">✨ 현재 대기 중인 예약 타이머가 없습니다.</span>
+                            <p style="margin: 4px 0 0 0; font-size: 0.85em; color: #64748b;">브랜드를 선택하여 오픈런 타이머를 세팅해보세요!</p>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <h1>🚀 방탈출 예약 자동화 제어판</h1>
+        <p style="color: #666; margin-bottom: 20px;">플레이할 브랜드를 선택하세요.</p>
+        
+        <div style="display: flex; flex-direction: column; gap: 12px; align-items: center;">
+            {% for brand in brands %}
+            <a href="/store?brand={{ brand.key }}" 
+               style="width: 280px; padding: 15px; background: #5808fb; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                {{ brand.brand_name }}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
